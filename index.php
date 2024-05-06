@@ -112,7 +112,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt->execute([$_SESSION['uid']]);
         $ability = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            array_push($language, strip_tags($row['name_of_language']));
+            array_push($language, strip_tags($row['id_lang']));
         }
         $values['language'] = $language;
         
@@ -198,7 +198,7 @@ else {
         // кроме логина и пароля.
         $db = new PDO('mysql:host=localhost;dbname=u67371', 'u67371', '3920651', array(PDO::ATTR_PERSISTENT => true));
         
-        $stmt = $db->prepare("UPDATE application SET name = ?, phone = ?, email = ?, year = ?, gender = ?, bio = ? WHERE id = ?");
+        $stmt = $db->prepare("UPDATE application SET names = ?, phones = ?, email = ?, dates = ?, gender = ?, biography = ? WHERE id = ?");
         $stmt->execute([$_POST['name'], $_POST['phone'], $_POST['email'], $_POST['year'], $_POST['gender'], $_POST['bio'], $_SESSION['uid']]);
 
         $stmt = $db->prepare("DELETE FROM languages WHERE id = ?");
@@ -207,7 +207,7 @@ else {
         $ability = $_POST['language'];
 
         foreach ($language as $item) {
-            $stmt = $db->prepare("INSERT INTO application_languages SET id = ?, name_of_language = ?");
+            $stmt = $db->prepare("INSERT INTO application_languages SET id = ?, id_lang = ?");
             $stmt->execute([$_SESSION['uid'], $item]);
         }
     } else {
@@ -236,7 +236,7 @@ else {
         $ability = $_POST['language'];
 
         foreach ($language as $item) {
-            $stmt = $db->prepare("INSERT INTO application_languages SET id = ?, name_of_language = ?");
+            $stmt = $db->prepare("INSERT INTO application_languages SET id = ?, id_lang = ?");
             $stmt->execute([$count, $item]);
         }
 
