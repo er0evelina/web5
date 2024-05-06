@@ -100,19 +100,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
         $stmt = $db->prepare("SELECT * FROM application WHERE id = ?");
         $stmt->execute([$_SESSION['uid']]);
         $row = $stmt->fetch(PDO::FETCH_ASSOC);
-        $values['name'] = strip_tags($row['name']);
-        $values['phone'] = strip_tags($row['phone']);
+        $values['name'] = strip_tags($row['names']);
+        $values['phone'] = strip_tags($row['phones']);
         $values['email'] = strip_tags($row['email']);
-        $values['year'] = $row['year'];
+        $values['year'] = $row['dates'];
         $values['gender'] = $row['gender'];
-        $values['bio'] = strip_tags($row['bio']);
+        $values['bio'] = strip_tags($row['biography']);
         $values['checkbox'] = true; 
 
         $stmt = $db->prepare("SELECT * FROM languages WHERE id = ?");
         $stmt->execute([$_SESSION['uid']]);
         $ability = array();
         while ($row = $stmt->fetch(PDO::FETCH_ASSOC)) {
-            array_push($language, strip_tags($row['id_lang']));
+            array_push($language, strip_tags($row['title']));
         }
         $values['language'] = $language;
         
@@ -207,7 +207,7 @@ else {
         $ability = $_POST['language'];
 
         foreach ($language as $item) {
-            $stmt = $db->prepare("INSERT INTO application_languages SET id = ?, id_lang = ?");
+            $stmt = $db->prepare("INSERT INTO application_languages SET id = ?, title = ?");
             $stmt->execute([$_SESSION['uid'], $item]);
         }
     } else {
